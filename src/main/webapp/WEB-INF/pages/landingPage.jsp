@@ -35,7 +35,21 @@
 	</div>
 	<div class="content container-fluid" id="content">
 	
-		<button type="button" class="btn btn-dark mt-2 d-none" id="downloadImpexBtn">Download Impex</button>
+	<form class="row row-cols-lg-auto g-3 align-items-center my-2 d-none" id="downloadImpexSection">
+  		<div class="col-6">
+			<div class="input-group">
+		      <span class=" fw-bold input-group-text" id="fileNameSpan"></span>
+		      <button type="button" class="btn btn-dark form-control" id="downloadImpexBtn">Download Impex</button>
+		  </div>
+		</div>
+		<div class="col-6">
+			<button type="button" class="btn btn-outline-danger form-control" id="addMacroBtn">Add Macro</button>
+		</div>
+	</form>	
+	
+		
+		
+		
 		
 		<div id="impex-editor" class="">
 			<table id="impex-editor-table" class="table"></table>

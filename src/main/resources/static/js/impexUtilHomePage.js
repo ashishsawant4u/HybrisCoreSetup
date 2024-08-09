@@ -12,6 +12,12 @@ function bindEventHandlers()
 		addNewImpexValueRow($(this));
 	});
 	
+	$('body').on('click', '#addMacroBtn', function(){
+		addNewMacroRow($(this));
+	});
+	
+	
+	
 	$('.toggle-sidebar').on('click', function() {
         $('#sidebar').toggleClass('collapsed');
         $('#content').toggleClass('collapsed');
@@ -45,12 +51,22 @@ function addNewImpexValueRow(addRowLinkRef)
 				        $('<td>').append(textarea).appendTo(valueRow);
 					}
 	
-	$linkDiv.closest('tr').after(valueRow);
+	$linkDiv.closest('tr').nextAll('.empty-row').first().before(valueRow);
 	
 	 $('html, body').animate({
-                scrollTop: $linkDiv.closest('tr').first().offset().top
+                scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prevAll('.impex-header-row').first().offset().top
             }, 1000); 
 	
+}
+
+function addNewMacroRow(addMacroLinkRef)
+{
+	
+	let macroRow = $('<tr>').addClass('impex-value-row');
+					let textarea = $('<textarea>').addClass('w-100 text-danger');
+			        $('<td>').attr('colspan','3').append(textarea).appendTo(macroRow);
+	
+	$('#impex-editor table .impex-header-row').first().prevAll('.empty-row').first().after(macroRow);
 }
 
 function preareImpexContent()
@@ -85,6 +101,29 @@ function preareImpexContent()
 						rowContent += ';';  
 					  }
 				    });
+				    
+				    //if row is filled empty then ignore
+				    let valueContent = rowContent.replace(/\s/g, '').replace(/;/g, '');
+				   
+					if(valueContent.length === 0)
+					{
+						rowContent = '';
+					}
+				}
+				else if($(this).hasClass('impex-macro-row'))
+				{
+					$(this).find('td').each(function(i) 
+				    {
+				      rowContent += $(this).find('textarea').val(); 
+				    });
+				    
+				    //if row is filled empty then ignore
+				    let valueContent = rowContent.replace(/\s/g, '');
+				   
+					if(valueContent.length === 0)
+					{
+						rowContent = '';
+					}
 				}
 				else
 				{
@@ -94,16 +133,48 @@ function preareImpexContent()
 				    });
 				}
 			    
-			    impexContent += rowContent + '<br>'; 
+			   if(rowContent.length > 0)
+			   {
+					if(rowContent.startsWith('#') || $(this).hasClass('impex-header-row'))
+				    {
+						impexContent += '<br>' + rowContent + '<br>';
+					}
+					else
+					{
+						impexContent += rowContent + '<br>'; 
+					}
+				}
+			    
 			  });
 			  
      $('#impexFileContent').html(impexContent);
+     downloadImpexFile();
+}
+
+function downloadImpexFile()
+{
+	 	var content = $('#impexFileContent').html().replace(/<br>/g, '\n');; // Get the text content of the div
+	    var blob = new Blob([content], { type: 'text/plain' }); // Create a Blob with the text content
+	    var url = URL.createObjectURL(blob); // Create a URL for the Blob
+	    
+	    // Create a temporary link element and trigger the download
+	    var a = document.createElement('a');
+	    a.href = url;
+	    a.download = $('#fileNameSpan').text();
+	    document.body.appendChild(a);
+	    a.click();
+	    window.URL.revokeObjectURL(url); // Clean up
+	    document.body.removeChild(a);
 }
 
 
 function getFileContent(fileName)
 {
 	$("#impex-editor").empty();
+	$("#fileNameSpan").text(fileName);
+	
+	$('#impexFileContent').addClass('d-none');
+	$('#impexFileContent').empty();
 	
 	$.ajax({
 	  type: "GET",
@@ -111,7 +182,7 @@ function getFileContent(fileName)
 	  cache: false,
 	  success: function(data){
 		    console.log('done '+data.length);
-		    $('#downloadImpexBtn').removeClass('d-none');
+		    $('#downloadImpexSection').removeClass('d-none');
 		    
 		   
 		    var table = $('<table>').addClass('table table-bordered');
@@ -122,7 +193,7 @@ function getFileContent(fileName)
 				
 				
 				let isHeader = data[i].toLowerCase().startsWith('insert_update') || data[i].toLowerCase().startsWith('update');
-				let isMicro = data[i].startsWith('$');
+				let isMacro = data[i].startsWith('$');
 				let isValueRow = data[i].startsWith(';');
 				let isImpexComment = data[i].startsWith('#');
 				var attributes = data[i].split(';');
@@ -143,7 +214,7 @@ function getFileContent(fileName)
 				        $col.text(attr).appendTo(row);
 				    });
 				    
-				    var newValueRowLink = $('<a>', {
+				    let newValueRowLink = $('<a>', {
 					        text: 'Add Row',
 					        class:'add-impex-value-row-link link-dark',
 					        href:'#'
@@ -152,10 +223,12 @@ function getFileContent(fileName)
 				    let newEntryLinkRow = $('<tr>').addClass('new-row-link-row').appendTo(tbody);
 					$('<td>').attr('colspan','4').append(newValueRowLink).appendTo(newEntryLinkRow);
 				}
-				else if(isMicro)
+				else if(isMacro)
 				{
-						let row = $('<tr>').appendTo(tbody);
-						$('<td>').attr('colspan','3').addClass('text-danger').text(data[i]).appendTo(row);
+						let textarea = $('<textarea>').addClass('w-100 text-danger').val(data[i]);
+						
+						let row = $('<tr>').addClass('impex-macro-row').appendTo(tbody);
+						$('<td>').attr('colspan','3').append(textarea).appendTo(row);
 				}
 				else if(isValueRow)
 				{
@@ -172,14 +245,19 @@ function getFileContent(fileName)
 				else if(isImpexComment)
 				{
 					$('<tr>').addClass('empty-row no-border-row').appendTo(tbody);
-					let row = $('<tr>').addClass('no-border-row').appendTo(tbody);
+					let row = $('<tr>').addClass('no-border-row impex-comment-row').appendTo(tbody);
 					$('<td>').attr('colspan','4').addClass('text-muted').text(data[i]).appendTo(row);
 				}
 				else
 				{
 					
 				}
-				 
+				
+				//last row
+				if(i==data.length-1)
+				{
+					$('<tr>').addClass('empty-row no-border-row').appendTo(tbody);
+				}	 
 			}
 			$("#impex-editor").append(table);	
 			

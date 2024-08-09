@@ -30,8 +30,8 @@ public class ImpexUtilityController
 	@Value("${template.impex.directory.location}")
 	String templateImpexLocation;
 	
-	  @Value("classpath:impex-templates/*")
-	  private Resource[] resources;
+	@Value("classpath:impex-templates/*")
+	private Resource[] resources;
 
 	
 	@GetMapping("/home")
