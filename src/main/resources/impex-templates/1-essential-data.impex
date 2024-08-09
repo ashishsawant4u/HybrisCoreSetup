@@ -1,0 +1,32 @@
+# Languages
+INSERT_UPDATE Language;isocode[unique=true];fallbackLanguages(isocode);active[default=true]
+
+# Currencies
+INSERT_UPDATE Currency;isocode[unique=true];conversion;digits;symbol
+
+# Vendor
+INSERT_UPDATE Vendor;code[unique=true];name
+
+# Disable preview for email pages
+UPDATE CMSPageType;code[unique=true];previewDisabled
+
+# Titles
+INSERT_UPDATE Title;code[unique=true]
+
+# Media Folders
+INSERT_UPDATE MediaFolder;qualifier[unique=true];path[unique=true]
+
+# Media formats
+INSERT_UPDATE MediaFormat;qualifier[unique=true]
+
+# Tax & Tax Groups
+INSERT_UPDATE UserTaxGroup;code[unique=true]
+
+INSERT_UPDATE ProductTaxGroup;code[unique=true]
+
+INSERT_UPDATE Tax;code[unique=true];value;currency(isocode)
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+
+# Deactivate Frontend Restriction on category by default for perfomance purposes
+UPDATE SearchRestriction;code[unique=true];active[default=false]

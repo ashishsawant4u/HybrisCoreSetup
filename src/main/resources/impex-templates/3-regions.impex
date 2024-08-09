@@ -1,0 +1,3 @@
+# Import Regions
+
+INSERT_UPDATE Region;country(isocode);isocode[unique=true];isocodeShort;name[lang=en];active[default=true]

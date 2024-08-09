@@ -1,0 +1,55 @@
+# Import Delivery Modes / Zones
+#
+#% impex.setLocale(Locale.GERMAN)
+
+# Currencies
+$ukCurrency=GBP
+$jpCurrency=JPY
+$usCurrency=USD
+$europeCurrency=EUR
+
+# Delivery Zones
+INSERT_UPDATE Zone                  ; code[unique=true]               ; countries(isocode)
+                                    
+# Zone Delivery Modes
+INSERT_UPDATE ZoneDeliveryMode      ; code[unique=true]               ; net                                                                                                                                             ; active[default=true]
+
+
+# UK
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='uk'][unique=true]                                                                                                           ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+
+
+# Continental Europe
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='continentalEurope'][unique=true]                                                                                            ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+# USA
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='usa'][unique=true]                                                                                                          ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+
+
+
+# Canada
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='ca'][unique=true]                                                                                                           ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+
+
+# Japan
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='japan'][unique=true]                                                                                                        ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+
+# China
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='china'][unique=true]                                                                                                        ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+# otherAsianRegions
+INSERT_UPDATE ZoneDeliveryModeValue ; deliveryMode(code)[unique=true] ; zone(code)[default='otherAsianRegions'][unique=true]                                                                                            ; currency(isocode)[unique=true] ; value  ; minimum[unique=true]
+
+# Pickup Delivery Mode
+INSERT_UPDATE PickUpDeliveryMode    ; code[unique=true]               ; active[default=true]                                                                                                                            ; supportedMode(code)
+
+##############################
+# Insert DeliveryMode taxes
+##############################
+INSERT_UPDATE ProductTaxCode        ; productCode[unique=true]        ; taxCode                                                                                                                                         ; taxArea[unique=true]
+
+

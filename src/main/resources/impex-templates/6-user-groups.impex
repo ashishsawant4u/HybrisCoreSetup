@@ -1,0 +1,7 @@
+# Import Customers
+
+$regulargroup=regulargroup
+
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+

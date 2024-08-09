@@ -1,0 +1,5 @@
+# Import Themes
+# Import the themes supported by the store front
+#
+
+INSERT_UPDATE SiteTheme;code[unique=true]

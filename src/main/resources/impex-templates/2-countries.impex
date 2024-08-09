@@ -1,0 +1,21 @@
+# Import Countries
+# Full country list conforming to ISO 3166-1 alpha-2
+#
+INSERT_UPDATE Country;isocode[unique=true];name[lang=en];active[default=true]
+
+#
+# ISO 3166-2:US
+#
+INSERT_UPDATE Region;country(isocode);isocode[unique=true];isocodeShort;name[lang=en];active[default=true]
+
+#
+# ISO 3166-2:CA
+#
+
+#
+# ISO 3166-2:CN
+#
+
+#
+# ISO 3166-2:JP
+#
