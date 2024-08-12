@@ -188,6 +188,7 @@ function getFileContent(fileName)
 		    var table = $('<table>').addClass('table table-bordered');
 		    var thead = $('<thead>').appendTo(table);
 		    var tbody = $('<tbody>').appendTo(table);
+		    var totalAttrs = 0;
 			for (let i = 0; i < data.length; i++) 
 			{
 				
@@ -199,6 +200,8 @@ function getFileContent(fileName)
 				var attributes = data[i].split(';');
 				if(isHeader)
 				{
+					totalAttrs = attributes.length;
+					
 					if(i!==0 && !data[i-1].startsWith('#'))
 					{
 						$('<tr>').addClass('empty-row').appendTo(tbody);
@@ -233,14 +236,18 @@ function getFileContent(fileName)
 				else if(isValueRow)
 				{
 					let row = $('<tr>').addClass('table-light impex-value-row').appendTo(tbody);
-					$.each(attributes, function(index, attr) {
-						let textarea = $('<textarea>').addClass('w-100').val(attr);
+					
+					for(let index=0; index<totalAttrs; index++)
+					{
+						let attrVal = (index > attributes.length) ? '' : attributes[index];
+						
+						let textarea = $('<textarea>').addClass('w-100').val(attrVal);
 						if(index==0)
 						{
 							textarea.addClass('d-none');
 						}
 				        $('<td>').append(textarea).appendTo(row);
-				    });
+					}
 				}
 				else if(isImpexComment)
 				{
