@@ -16,6 +16,38 @@ function bindEventHandlers()
 		addNewMacroRow($(this));
 	});
 	
+	$('body').on('click', '.impex-value-textarea', function(){
+		
+		let curretTDposition = $(this).closest('td').index();
+		
+		let headers = [];
+		$(this).closest('tr').prevAll('.impex-header-row').first().find('td').each(function(i) 
+		{
+			headers.push($(this).text());	      
+		});	
+		
+		//remove all existing header reference span from table
+		$('#impex-editor table').find('.textarea-header-ref').remove();
+		
+		//create header reference span for current row
+		$(this).closest('tr').find('td').each(function(i,cell) 
+		{
+			  //if(i>0)
+			  {
+					let headerRefSpan =  $('<span>', {
+									class: 'textarea-header-ref text-muted fs-6',
+								    text: headers[i]
+								  });
+					$(cell).append(headerRefSpan);
+			  }
+		});	
+		
+		
+    });
+	
+	$('body').on('click', '.impex-value-textarea', function(){
+		
+	});	
 	
 	
 	$('.toggle-sidebar').on('click', function() {
@@ -43,7 +75,7 @@ function addNewImpexValueRow(addRowLinkRef)
 	
 					for (let index = 0; index < totalAttr; index++) 
 					{
-						let textarea = $('<textarea>').addClass('w-100');
+						let textarea = $('<textarea>').addClass('w-100 impex-value-textarea');
 						if(index==0)
 						{
 							textarea.addClass('d-none');
@@ -54,7 +86,7 @@ function addNewImpexValueRow(addRowLinkRef)
 	$linkDiv.closest('tr').nextAll('.empty-row').first().before(valueRow);
 	
 	 $('html, body').animate({
-                scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prevAll('.impex-header-row').first().offset().top
+                scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prev('tr').offset().top
             }, 1000); 
 	
 }
@@ -241,7 +273,7 @@ function getFileContent(fileName)
 					{
 						let attrVal = (index > attributes.length) ? '' : attributes[index];
 						
-						let textarea = $('<textarea>').addClass('w-100').val(attrVal);
+						let textarea = $('<textarea>').addClass('w-100 impex-value-textarea').val(attrVal);
 						if(index==0)
 						{
 							textarea.addClass('d-none');
