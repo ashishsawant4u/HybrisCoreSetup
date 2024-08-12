@@ -85,9 +85,12 @@ function addNewImpexValueRow(addRowLinkRef)
 	
 	$linkDiv.closest('tr').nextAll('.empty-row').first().before(valueRow);
 	
+	$linkDiv.closest('tr').nextAll('.empty-row').first().prev('tr').find('td').eq(1).find('textarea').click();
+	
+	//scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prev('tr').find('td').eq(1).offset().top
 	 $('html, body').animate({
-                scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prev('tr').offset().top
-            }, 1000); 
+                scrollTop: $linkDiv.closest('tr').nextAll('.empty-row').first().prev('tr').prev('tr').offset().top
+            }, 500); 
 	
 }
 

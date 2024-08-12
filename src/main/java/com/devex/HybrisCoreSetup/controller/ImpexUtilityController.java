@@ -1,13 +1,11 @@
 package com.devex.HybrisCoreSetup.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -33,10 +31,10 @@ public class ImpexUtilityController
 	@Value("classpath:impex-templates/*")
 	private Resource[] resources;
 
-	
 	@GetMapping("/home")
 	public String landingPage(Model model)
 	{
+		
 		List<String> impexFiles = List.of(resources).stream()
 				.map(r->r.getFilename())
 				.collect(Collectors.toList());
@@ -60,26 +58,20 @@ public class ImpexUtilityController
 	@ResponseBody
 	public List<String> fileContent(@PathVariable String fileName)
 	{
-		String filePath = templateImpexLocation + fileName;
-		
-		List<String> headers = new ArrayList<String>();
-		
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) 
-        {
-            String line;
-            while ((line = br.readLine()) != null) 
-            {
-            	if(!line.isBlank())
-            	{
-            		headers.add(line);
-            	}
-            }
-        } 
-        catch (IOException e) {
-        	log.error("Error reading the file: " + e.getMessage());
-        }
-        
-        return headers;
-	}
+		try 
+		{
+			Path filePath =  List.of(resources).stream()
+					   .filter(f -> f.getFilename().equals(fileName))
+					   .findAny().get()
+					   .getFile().toPath();
+
+			return Files.readAllLines(filePath, StandardCharsets.UTF_8);
+		} 
+		catch (Exception e) 
+		{
+			log.error("error while reading impex "+e);
+		}
+		return null;
+	}	
 }
 

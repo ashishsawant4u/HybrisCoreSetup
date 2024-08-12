@@ -35,7 +35,7 @@
 	</div>
 	<div class="content container-fluid" id="content">
 	
-	<form class="row row-cols-lg-auto g-3 align-items-center my-2 d-none" id="downloadImpexSection">
+	<form class="row row-cols-lg-auto g-3 align-items-center my-2 d-none sticky" id="downloadImpexSection">
   		<div class="col-6">
 			<div class="input-group">
 		      <span class=" fw-bold input-group-text" id="fileNameSpan"></span>

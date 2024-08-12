@@ -9,15 +9,30 @@ INSERT_UPDATE Vendor;code[unique=true];name
 
 # Disable preview for email pages
 UPDATE CMSPageType;code[unique=true];previewDisabled
+;EmailPage;true
 
 # Titles
 INSERT_UPDATE Title;code[unique=true]
 
 # Media Folders
 INSERT_UPDATE MediaFolder;qualifier[unique=true];path[unique=true]
+;images;images
+;email-body;email-body
+;email-attachments;email-attachments
 
 # Media formats
 INSERT_UPDATE MediaFormat;qualifier[unique=true]
+;1200Wx1200H
+;515Wx515H
+;365Wx246H
+;300Wx300H
+;96Wx96H
+;65Wx65H
+;30Wx30H
+;mobile
+;tablet
+;desktop
+;widescreen
 
 # Tax & Tax Groups
 INSERT_UPDATE UserTaxGroup;code[unique=true]
@@ -27,6 +42,11 @@ INSERT_UPDATE ProductTaxGroup;code[unique=true]
 INSERT_UPDATE Tax;code[unique=true];value;currency(isocode)
 
 INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;cartRemovalJob;cartRemovalJob
+;siteMapMediaJob;siteMapMediaJob
+;quoteToExpireSoonJobPerformable;quoteToExpireSoonJobPerformable
+;quoteExpiredJobPerformable;quoteExpiredJobPerformable
 
 # Deactivate Frontend Restriction on category by default for perfomance purposes
 UPDATE SearchRestriction;code[unique=true];active[default=false]
+;Frontend_RestrictedCategory
